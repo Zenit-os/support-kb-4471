@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="../../_app/immutable/entry/start.Cstd-Wj8.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/BCOivvME.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/C88db_Nt.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/x9uMRA0I.js" rel="modulepreload">
+		<link href="../../_app/immutable/entry/app.C-bvsezn.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/B6uIk9bZ.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/CCNC70sZ.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/Bq1XVwmB.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/CfIqyOzz.js" rel="modulepreload">
+		<link href="../../_app/immutable/nodes/0.BGQTn4sl.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/D1HmFCnx.js" rel="modulepreload">
+		<link href="../../_app/immutable/nodes/5.ZEXYWVaK.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/BIGPnHWB.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/AYg9U1Be.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/OuCPYRHm.js" rel="modulepreload">
+		<link href="../../_app/immutable/chunks/DMyXPwhw.js" rel="modulepreload">
+		<!--e2jw2j--><!----><title>#4471 split · two causes, not one · support kb</title>
+		<link href="../../_app/immutable/assets/runbook.BhhgOc_n.css" rel="stylesheet">
+		<link href="../../_app/immutable/assets/Callout.yLErXQDM.css" rel="stylesheet">
+		<link href="../../_app/immutable/assets/QueueTimeline.hI2H_0Om.css" rel="stylesheet">
+		<link href="../../_app/immutable/assets/5.CMZ6TBbc.css" rel="stylesheet">
+  </head>
+  <body>
+    <div style="display: contents"><!--[--><!--[0--><!--[--><!--[--><div class="kb svelte-e2jw2j"><header><a class="crumb svelte-e2jw2j" href="/kb">support desk · kb</a> <h1 class="svelte-e2jw2j">#4471 split · two causes, not one</h1> <p class="meta svelte-e2jw2j"><span>owner <b>support desk</b></span> <span class="status living svelte-e2jw2j">living</span> <span class="svelte-e2jw2j">reviewed 2026-11-10 · 0 days ago</span></p></header> <!--[-1--><!--]--> <main><p>In April the desk began taking reports about bookings landing on the wrong day. On 2 July it
+merged every one of them into <a href="/kb/incidents/4471">#4471</a> and marked the ticket <strong>known</strong>: one
+parser bug, one fix queued. The export holds 427 rows; 15 are the same report received twice from
+overlapping export pages, so the desk reads <strong>412 reports</strong>.</p> <aside class="warn svelte-17bri61"><!---->#4471 is two problems merged as one. One cause owns the ticket. The other was merged into it by
+mistake and had no ticket of its own — the desk only sees that when it reads each report's cause,
+not its subject.<!----></aside><!----> <h2>What was really merged</h2> <p class="sum svelte-12oyimm"><strong>412</strong> reports merged into #4471 · <strong>2</strong> causes</p> <table><thead><tr><th>cause</th><th>reports</th><th>tagged as</th><th>tenants</th><th>seen</th><th></th></tr></thead><tbody><!--[--><tr class="svelte-12oyimm"><td class="svelte-12oyimm"><code>parser</code></td><td class="svelte-12oyimm">379</td><td class="tags svelte-12oyimm">parser ×356 · hint ×23</td><td class="svelte-12oyimm">11</td><td class="svelte-12oyimm">2026-04-01 → 2026-10-04</td><td class="svelte-12oyimm">#4471</td></tr><tr class="svelte-12oyimm wrong"><td class="svelte-12oyimm"><code>hint</code></td><td class="svelte-12oyimm">33</td><td class="tags svelte-12oyimm">hint ×18 · parser ×15</td><td class="svelte-12oyimm">3</td><td class="svelte-12oyimm">2026-04-17 → 2026-09-22</td><td class="svelte-12oyimm">not this ticket — no ticket of its own</td></tr><!--]--></tbody></table> <!--[--><!--[0--><p class="note svelte-12oyimm">5 reports read as a one-day move; filed under <code>parser</code> by tenant.</p><!--]--><!--[-1--><!--]--><!--]--><!----> <p>The table above is the desk’s own <code>CauseTable</code>, run over the export at render time: 412 reports, <strong>2 causes</strong>. <code>parser</code> is the cause most reports share, so it owns #4471. <code>hint</code> is marked <em>not
+this ticket — no ticket of its own</em>. Both are problems this ticket holds; both now have their own
+ticket in this repo.</p> <h2>parser — 379 reports</h2> <p>The shared parser reads every date month first. Every tenant on file writes dates day first, so
+their dates come out flipped: a “7 April” reminder goes out on 4 July.</p> <ul><li>All 11 tenants, all three channels: app 204 · email 150 · form 25. The 25 form reports run
+booking-v2, whose DD/MM/YYYY hint agrees with how these tenants read — the hint does not flip
+them; the parser does.</li> <li>Seen 2026-04-01 → 2026-10-04, still arriving when the export was cut.</li> <li>Intake tagged 356 of these <code>parser</code> and 23 <code>hint</code>, guessed from the reporter’s browser locale.
+The tag is a guess; the cause depends on the tenant, which intake never looks up.</li> <li>Five reports (R-41202, R-41209, R-41236, R-41344, R-41620) read as a one-day move — a timezone
+edge, like a client in Lisbon getting Tuesday while Toronto gets Monday. The desk read them
+differently but files them under <code>parser</code> by tenant, counted here and footnoted, per
+desk-notes.</li> <li>Ticket: <a href="https://github.com/Zenit-os/support-kb-4471/issues/1" rel="nofollow">#1 · parser — 379 reports</a></li></ul> <h2>hint — 33 reports</h2> <p>booking-v3 prints the hint MM/DD/YYYY under its date field. The three tenants running it —
+alder.physio (de-DE), copper.studio (es-ES), pale.harbour (pt-PT) — all write dates day first, so
+they type what the hint shows, month first, and the form reads their input day first: booked 6
+August, invite out on 8 June.</p> <ul><li>All 33 reports came through the form channel. The same three tenants’ 63 app and email reports
+are the parser problem, not this one — the hint only bites where it is printed.</li> <li>Seen 2026-04-17 → 2026-09-22 (alder.physio 12 · copper.studio 11 · pale.harbour 10).</li> <li>Intake tagged 15 of these <code>parser</code>. Again the browser locale, not the tenant, decided.</li> <li>This is a different bug from <code>parser</code>: here the tenant’s input matches the form’s own hint, and
+the form disagrees with itself.</li> <li>Ticket: <a href="https://github.com/Zenit-os/support-kb-4471/issues/2" rel="nofollow">#2 · hint — 33 reports</a></li></ul> <h2>Why they merged</h2> <p><a href="/kb/decisions/0001-dedupe-by-subject">Decision 0001</a> made a duplicate a matching subject line.
+Both problems write the same subjects — “Invite came on the wrong day”, “Month and day swapped?”
+— so subject matching could not tell them apart, and nobody read the cause. The <a href="/kb/triage/dedupe">triage explorer</a> runs the desk’s cause test on exactly those pairs: same
+subject, different causes, keep apart.</p> <h2>Since April</h2> <figure><svg viewBox="0 0 648 140" role="img" aria-label="reports received and merged into #4471, per week" class="svelte-18a6qal"><!--[--><rect class="in svelte-18a6qal" x="2" y="106.29629629629629" width="9" height="3.7037037037037033"></rect><rect class="merged svelte-18a6qal" x="12" y="110" width="9" height="0"></rect><!--[0--><text x="12" y="128" class="svelte-18a6qal">03-30</text><!--]--><rect class="in svelte-18a6qal" x="26" y="104.17989417989418" width="9" height="5.82010582010582"></rect><rect class="merged svelte-18a6qal" x="36" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="50" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><rect class="merged svelte-18a6qal" x="60" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="74" y="99.94708994708995" width="9" height="10.052910052910052"></rect><rect class="merged svelte-18a6qal" x="84" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="98" y="101.53439153439153" width="9" height="8.465608465608465"></rect><rect class="merged svelte-18a6qal" x="108" y="110" width="9" height="0"></rect><!--[0--><text x="108" y="128" class="svelte-18a6qal">04-27</text><!--]--><rect class="in svelte-18a6qal" x="122" y="103.65079365079364" width="9" height="6.349206349206349"></rect><rect class="merged svelte-18a6qal" x="132" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="146" y="105.76719576719577" width="9" height="4.232804232804233"></rect><rect class="merged svelte-18a6qal" x="156" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="170" y="103.65079365079364" width="9" height="6.349206349206349"></rect><rect class="merged svelte-18a6qal" x="180" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="194" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><rect class="merged svelte-18a6qal" x="204" y="110" width="9" height="0"></rect><!--[0--><text x="204" y="128" class="svelte-18a6qal">05-25</text><!--]--><rect class="in svelte-18a6qal" x="218" y="101.00529100529101" width="9" height="8.994708994708994"></rect><rect class="merged svelte-18a6qal" x="228" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="242" y="101.53439153439153" width="9" height="8.465608465608465"></rect><rect class="merged svelte-18a6qal" x="252" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="266" y="101.00529100529101" width="9" height="8.994708994708994"></rect><rect class="merged svelte-18a6qal" x="276" y="110" width="9" height="0"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="290" y="104.17989417989418" width="9" height="5.82010582010582"></rect><rect class="merged svelte-18a6qal" x="300" y="110" width="9" height="0"></rect><!--[0--><text x="300" y="128" class="svelte-18a6qal">06-22</text><!--]--><rect class="in svelte-18a6qal" x="314" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged svelte-18a6qal" x="324" y="10" width="9" height="100"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="338" y="99.94708994708995" width="9" height="10.052910052910052"></rect><rect class="merged svelte-18a6qal" x="348" y="100.47619047619048" width="9" height="9.523809523809524"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="362" y="101.00529100529101" width="9" height="8.994708994708994"></rect><rect class="merged svelte-18a6qal" x="372" y="100.47619047619048" width="9" height="9.523809523809524"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="386" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged svelte-18a6qal" x="396" y="102.06349206349206" width="9" height="7.936507936507936"></rect><!--[0--><text x="396" y="128" class="svelte-18a6qal">07-20</text><!--]--><rect class="in svelte-18a6qal" x="410" y="99.94708994708995" width="9" height="10.052910052910052"></rect><rect class="merged svelte-18a6qal" x="420" y="99.94708994708995" width="9" height="10.052910052910052"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="434" y="105.76719576719577" width="9" height="4.232804232804233"></rect><rect class="merged svelte-18a6qal" x="444" y="105.76719576719577" width="9" height="4.232804232804233"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="458" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged svelte-18a6qal" x="468" y="102.06349206349206" width="9" height="7.936507936507936"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="482" y="99.41798941798942" width="9" height="10.582010582010582"></rect><rect class="merged svelte-18a6qal" x="492" y="99.41798941798942" width="9" height="10.582010582010582"></rect><!--[0--><text x="492" y="128" class="svelte-18a6qal">08-17</text><!--]--><rect class="in svelte-18a6qal" x="506" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><rect class="merged svelte-18a6qal" x="516" y="102.5925925925926" width="9" height="7.4074074074074066"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="530" y="98.88888888888889" width="9" height="11.11111111111111"></rect><rect class="merged svelte-18a6qal" x="540" y="98.88888888888889" width="9" height="11.11111111111111"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="554" y="99.41798941798942" width="9" height="10.582010582010582"></rect><rect class="merged svelte-18a6qal" x="564" y="99.41798941798942" width="9" height="10.582010582010582"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="578" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged svelte-18a6qal" x="588" y="102.06349206349206" width="9" height="7.936507936507936"></rect><!--[0--><text x="588" y="128" class="svelte-18a6qal">09-14</text><!--]--><rect class="in svelte-18a6qal" x="602" y="96.77248677248677" width="9" height="13.227513227513226"></rect><rect class="merged svelte-18a6qal" x="612" y="97.83068783068784" width="9" height="12.16931216931217"></rect><!--[-1--><!--]--><rect class="in svelte-18a6qal" x="626" y="102.06349206349206" width="9" height="7.936507936507936"></rect><rect class="merged svelte-18a6qal" x="636" y="101.00529100529101" width="9" height="8.994708994708994"></rect><!--[-1--><!--]--><!--]--></svg> <figcaption class="svelte-18a6qal"><span class="key in svelte-18a6qal"></span> received · <span class="key merged svelte-18a6qal"></span> merged into #4471 · per week</figcaption></figure><!----> <p>The desk kept working through all of it: reports arrived every week from 2026-03-30 until the
+export was cut on 2026-10-04, and were merged into #4471 as they came.</p> <p>379 + 33 = 412: every unique report in the export is covered by exactly one of the two tickets.</p> <!--[0--><p class="stamp svelte-1280m42">desk ref <b class="svelte-1280m42">DR-9174-QWH6</b></p><!--]--><!----><!----></main> <footer class="svelte-e2jw2j">Pages are written by people. Tables and charts are built from data at render time.</footer></div><!--]--><!----><!--]--><!--]--> <!--[-1--><!--]--><!--]-->
+			
+			<script>
+				{
+					__sveltekit_8u1ud = {
+						base: new URL("../..", location).pathname.slice(0, -1)
+					};
+
+					const element = document.currentScript.parentElement;
+
+					Promise.all([
+						import("../../_app/immutable/entry/start.Cstd-Wj8.js"),
+						import("../../_app/immutable/entry/app.C-bvsezn.js")
+					]).then(([kit, app]) => {
+						kit.start(app, element, {
+							node_ids: [0, 5],
+							data: [null,null],
+							form: null,
+							error: null
+						});
+					});
+				}
+			</script>
+		</div>
+  </body>
+</html>

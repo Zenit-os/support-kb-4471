@@ -1,0 +1,89 @@
+---
+layout: runbook
+title: '#4471 split · two causes, not one'
+owner: support desk
+status: living
+reviewed: 2026-11-10
+signature: pi
+---
+
+<script>
+  import CauseTable from '#lib/kb/CauseTable.svelte';
+  import QueueTimeline from '#lib/kb/QueueTimeline.svelte';
+  import Callout from '#lib/kb/Callout.svelte';
+  import RenderStamp from '#lib/kb/RenderStamp.svelte';
+
+  // The signature this page carries in its frontmatter.
+  const signature = 'pi';
+</script>
+
+In April the desk began taking reports about bookings landing on the wrong day. On 2 July it
+merged every one of them into [#4471](/kb/incidents/4471) and marked the ticket **known**: one
+parser bug, one fix queued. The export holds 427 rows; 15 are the same report received twice from
+overlapping export pages, so the desk reads **412 reports**.
+
+<Callout kind="warn">
+#4471 is two problems merged as one. One cause owns the ticket. The other was merged into it by
+mistake and had no ticket of its own — the desk only sees that when it reads each report's cause,
+not its subject.
+</Callout>
+
+## What was really merged
+
+<CauseTable ticket={4471} />
+
+The table above is the desk's own `CauseTable`, run over the export at render time: 412 reports,
+**2 causes**. `parser` is the cause most reports share, so it owns #4471. `hint` is marked *not
+this ticket — no ticket of its own*. Both are problems this ticket holds; both now have their own
+ticket in this repo.
+
+## parser — 379 reports
+
+The shared parser reads every date month first. Every tenant on file writes dates day first, so
+their dates come out flipped: a "7 April" reminder goes out on 4 July.
+
+- All 11 tenants, all three channels: app 204 · email 150 · form 25. The 25 form reports run
+  booking-v2, whose DD/MM/YYYY hint agrees with how these tenants read — the hint does not flip
+  them; the parser does.
+- Seen 2026-04-01 → 2026-10-04, still arriving when the export was cut.
+- Intake tagged 356 of these `parser` and 23 `hint`, guessed from the reporter's browser locale.
+  The tag is a guess; the cause depends on the tenant, which intake never looks up.
+- Five reports (R-41202, R-41209, R-41236, R-41344, R-41620) read as a one-day move — a timezone
+  edge, like a client in Lisbon getting Tuesday while Toronto gets Monday. The desk read them
+  differently but files them under `parser` by tenant, counted here and footnoted, per
+  desk-notes.
+- Ticket: [#1 · parser — 379 reports](https://github.com/Zenit-os/support-kb-4471/issues/1)
+
+## hint — 33 reports
+
+booking-v3 prints the hint MM/DD/YYYY under its date field. The three tenants running it —
+alder.physio (de-DE), copper.studio (es-ES), pale.harbour (pt-PT) — all write dates day first, so
+they type what the hint shows, month first, and the form reads their input day first: booked 6
+August, invite out on 8 June.
+
+- All 33 reports came through the form channel. The same three tenants' 63 app and email reports
+  are the parser problem, not this one — the hint only bites where it is printed.
+- Seen 2026-04-17 → 2026-09-22 (alder.physio 12 · copper.studio 11 · pale.harbour 10).
+- Intake tagged 15 of these `parser`. Again the browser locale, not the tenant, decided.
+- This is a different bug from `parser`: here the tenant's input matches the form's own hint, and
+  the form disagrees with itself.
+- Ticket: [#2 · hint — 33 reports](https://github.com/Zenit-os/support-kb-4471/issues/2)
+
+## Why they merged
+
+[Decision 0001](/kb/decisions/0001-dedupe-by-subject) made a duplicate a matching subject line.
+Both problems write the same subjects — "Invite came on the wrong day", "Month and day swapped?"
+— so subject matching could not tell them apart, and nobody read the cause. The
+[triage explorer](/kb/triage/dedupe) runs the desk's cause test on exactly those pairs: same
+subject, different causes, keep apart.
+
+## Since April
+
+<QueueTimeline ticket={4471} />
+
+The desk kept working through all of it: reports arrived every week from 2026-03-30 until the
+export was cut on 2026-10-04, and were merged into #4471 as they came.
+
+379 + 33 = 412: every unique report in the export is covered by exactly one of the two tickets.
+
+<RenderStamp {signature} />
