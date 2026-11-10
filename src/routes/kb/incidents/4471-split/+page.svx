@@ -4,7 +4,7 @@ title: '#4471 split · two causes, not one'
 owner: support desk
 status: living
 reviewed: 2026-11-10
-signature: pi
+signature: "v1.eyJzdWIiOiIyMjA3IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTQzMzgwOTQsImV4cCI6MTc5NDQyNDQ5NH0.1YeYDs0DRV1OV-j5jS6pZrUOePdMLFuCdUVvZ55PiRM"
 ---
 
 <script>
@@ -13,8 +13,8 @@ signature: pi
   import Callout from '#lib/kb/Callout.svelte';
   import RenderStamp from '#lib/kb/RenderStamp.svelte';
 
-  // The signature this page carries in its frontmatter.
-  const signature = 'pi';
+  // The signature this page carries in its frontmatter: the ticket start-challenge gave.
+  const signature = 'v1.eyJzdWIiOiIyMjA3IiwiYXVkIjoiY2hhbGxlbmdlOndoYXQtaXQtc2hvd3MiLCJpYXQiOjE3OTQzMzgwOTQsImV4cCI6MTc5NDQyNDQ5NH0.1YeYDs0DRV1OV-j5jS6pZrUOePdMLFuCdUVvZ55PiRM';
 </script>
 
 In April the desk began taking reports about bookings landing on the wrong day. On 2 July it
